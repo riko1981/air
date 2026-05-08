@@ -1,0 +1,46 @@
+1. Создать и заполнить виртуальную среду:
+
+powershell
+Set-Location "ПАПКА_ПРОЕКТА"
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install --upgrade pip
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+2. По умолчанию проект использует локальную SQLite базу:
+
+data/air_monitoring.db
+
+SQL Server для запуска больше не обязателен.
+
+Если хотите использовать SQL Server, создайте файл .env рядом с main.py:
+
+powershell
+Copy-Item .env.example .env
+
+Затем поставьте AIR_DB_BACKEND=sqlserver и измените AIR_DB_SERVER, AIR_DB_NAME или порт API.
+
+3. Запуск в трех терминалах из папки проекта:
+
+Перед демонстрацией можно заполнить базу начальными данными:
+
+powershell
+.\seed_demo.ps1
+
+powershell
+.\run_api.ps1
+
+powershell
+.\run_simulator.ps1
+
+powershell
+.\run_dashboard.ps1
+
+Скрипты сами переходят в папку проекта через $PSScriptRoot и используют .venv, если она есть.
+
+4. Открыть в браузере:
+
+Сайт: http://localhost:8501
+API документация: http://localhost:8000/docs
+
+Важно: для режима SQL Server нужен установленный системный драйвер Microsoft ODBC Driver for SQL Server.
+Код автоматически выбирает Driver 18, Driver 17 или стандартный SQL Server, если AIR_DB_DRIVER не задан в .env.
